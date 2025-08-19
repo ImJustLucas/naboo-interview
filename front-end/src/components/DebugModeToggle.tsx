@@ -50,7 +50,6 @@ const DebugModeToggle = ({ className }: DebugModeToggleProps) => {
     }
   };
 
-  // Affiche seulement si l'utilisateur est admin
   if (user?.role !== "admin") {
     return null;
   }

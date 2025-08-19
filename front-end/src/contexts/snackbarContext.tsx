@@ -37,7 +37,7 @@ export const SnackbarProvider = ({
     if (snackbar) {
       setTimeout(() => {
         setSnackbar(null);
-      }, 4000); // Augmente de 1s à 4s
+      }, 4000);
     }
   }, [snackbar]);
 
@@ -46,15 +46,22 @@ export const SnackbarProvider = ({
       {children}
       {snackbar && (
         <Notification
-          icon={snackbar.type === "success" ? <IconCheck size="1.1rem" /> : <IconX size="1.1rem" />}
+          icon={
+            snackbar.type === "success" ? (
+              <IconCheck size="1.1rem" />
+            ) : (
+              <IconX size="1.1rem" />
+            )
+          }
           color={snackbar.type === "error" ? "red" : "green"}
-          style={{ 
-            position: "fixed", 
-            right: 16, 
-            bottom: 16, 
+          style={{
+            position: "fixed",
+            right: 16,
+            bottom: 16,
             zIndex: 999,
-            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)",
-            backdropFilter: "blur(8px)"
+            boxShadow:
+              "0 4px 12px rgba(0, 0, 0, 0.15), 0 2px 4px rgba(0, 0, 0, 0.1)",
+            backdropFilter: "blur(8px)",
           }}
         >
           {snackbar.message}
