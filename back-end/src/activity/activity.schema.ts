@@ -33,7 +33,6 @@ export class Activity extends Document {
   })
   owner!: User;
 
-  @Field(() => Date, { nullable: true })
   createdAt!: Date;
 }
 
