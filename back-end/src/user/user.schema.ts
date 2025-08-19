@@ -27,7 +27,6 @@ export class User extends Document {
   @Prop({ required: true })
   password!: string;
 
-  @Field()
   @Prop({ required: true, default: false })
   debugModeEnabled!: boolean;
 

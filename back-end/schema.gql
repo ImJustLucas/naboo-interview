@@ -59,7 +59,7 @@ input SignUpInput {
 }
 
 type User {
-  debugModeEnabled: Boolean!
+  debugModeEnabled: Boolean
   email: String!
   firstName: String!
   id: ID!
