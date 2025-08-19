@@ -1,8 +1,8 @@
-import { PageTitle } from "@/components";
+import { PageTitle, DebugModeToggle } from "@/components";
 import { graphqlClient } from "@/graphql/apollo";
 import { withAuth } from "@/hocs";
 import { useAuth } from "@/hooks";
-import { Avatar, Flex, Text } from "@mantine/core";
+import { Avatar, Flex, Text, Divider } from "@mantine/core";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 
@@ -22,7 +22,7 @@ const Profile = (props: ProfileProps) => {
         <title>Mon profil | CDTR</title>
       </Head>
       <PageTitle title="Mon profil" />
-      <Flex align="center" gap="md">
+      <Flex align="center" gap="md" mb="xl">
         <Avatar color="cyan" radius="xl" size="lg">
           {user?.firstName[0]}
           {user?.lastName[0]}
@@ -33,6 +33,10 @@ const Profile = (props: ProfileProps) => {
           <Text>{user?.lastName}</Text>
         </Flex>
       </Flex>
+
+      <Divider my="lg" />
+
+      <DebugModeToggle />
     </>
   );
 };

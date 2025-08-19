@@ -30,6 +30,8 @@ export const getServerSideProps: GetServerSideProps<
 export default function Discover({ activities }: DiscoverProps) {
   const { user } = useAuth();
 
+  console.log("activities", activities);
+
   return (
     <>
       <Head>

@@ -1,6 +1,7 @@
 import { ActivityFragment } from "@/graphql/generated/types";
+import { useAuth } from "@/hooks";
 import { useGlobalStyles } from "@/utils";
-import { Box, Button, Flex, Image, Text } from "@mantine/core";
+import { Box, Button, Flex, Image, Text, Badge } from "@mantine/core";
 import Link from "next/link";
 
 interface ActivityListItemProps {
@@ -9,6 +10,17 @@ interface ActivityListItemProps {
 
 export function ActivityListItem({ activity }: ActivityListItemProps) {
   const { classes } = useGlobalStyles();
+  const { user } = useAuth();
+  
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <Flex align="center" justify="space-between">
@@ -28,6 +40,11 @@ export function ActivityListItem({ activity }: ActivityListItemProps) {
             weight="bold"
             className={classes.ellipsis}
           >{`${activity.price}€/j`}</Text>
+          {user?.debugModeEnabled && activity.createdAt && (
+            <Badge color="orange" variant="light" size="xs" mt="xs">
+              Créé le {formatDate(activity.createdAt)}
+            </Badge>
+          )}
         </Box>
       </Flex>
       <Link href={`/activities/${activity.id}`} className={classes.link}>

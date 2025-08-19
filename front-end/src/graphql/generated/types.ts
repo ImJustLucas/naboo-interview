@@ -41,6 +41,7 @@ export type Mutation = {
   login: SignInDto;
   logout: Scalars['Boolean']['output'];
   register: User;
+  toggleDebugMode: User;
 };
 
 
@@ -100,14 +101,16 @@ export type SignUpInput = {
 
 export type User = {
   __typename?: 'User';
+  debugModeEnabled?: Maybe<Scalars['Boolean']['output']>;
   email: Scalars['String']['output'];
   firstName: Scalars['String']['output'];
   id: Scalars['ID']['output'];
   lastName: Scalars['String']['output'];
   password: Scalars['String']['output'];
+  role: Scalars['String']['output'];
 };
 
-export type ActivityFragment = { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } };
+export type ActivityFragment = { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } };
 
 export type OwnerFragment = { __typename?: 'User', firstName: string, lastName: string };
 
@@ -137,10 +140,15 @@ export type SignupMutationVariables = Exact<{
 
 export type SignupMutation = { __typename?: 'Mutation', register: { __typename?: 'User', id: string, email: string, firstName: string, lastName: string } };
 
+export type ToggleDebugModeMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ToggleDebugModeMutation = { __typename?: 'Mutation', toggleDebugMode: { __typename?: 'User', id: string, debugModeEnabled?: boolean | null } };
+
 export type GetActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
+export type GetActivitiesQuery = { __typename?: 'Query', getActivities: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
 
 export type GetActivitiesByCityQueryVariables = Exact<{
   activity?: InputMaybe<Scalars['String']['input']>;
@@ -149,29 +157,29 @@ export type GetActivitiesByCityQueryVariables = Exact<{
 }>;
 
 
-export type GetActivitiesByCityQuery = { __typename?: 'Query', getActivitiesByCity: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
+export type GetActivitiesByCityQuery = { __typename?: 'Query', getActivitiesByCity: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
 
 export type GetActivityQueryVariables = Exact<{
   id: Scalars['String']['input'];
 }>;
 
 
-export type GetActivityQuery = { __typename?: 'Query', getActivity: { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } } };
+export type GetActivityQuery = { __typename?: 'Query', getActivity: { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } } };
 
 export type GetLatestActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetLatestActivitiesQuery = { __typename?: 'Query', getLatestActivities: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
+export type GetLatestActivitiesQuery = { __typename?: 'Query', getLatestActivities: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
 
 export type GetUserActivitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserActivitiesQuery = { __typename?: 'Query', getActivitiesByUser: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
+export type GetUserActivitiesQuery = { __typename?: 'Query', getActivitiesByUser: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
 
 export type GetUserQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getMe: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string } };
+export type GetUserQuery = { __typename?: 'Query', getMe: { __typename?: 'User', id: string, firstName: string, lastName: string, email: string, role: string, debugModeEnabled?: boolean | null } };
 
 export type GetCitiesQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -301,6 +309,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   login?: Resolver<ResolversTypes['SignInDto'], ParentType, ContextType, RequireFields<MutationLoginArgs, 'signInInput'>>;
   logout?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   register?: Resolver<ResolversTypes['User'], ParentType, ContextType, RequireFields<MutationRegisterArgs, 'signUpInput'>>;
+  toggleDebugMode?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
@@ -319,11 +328,13 @@ export type SignInDtoResolvers<ContextType = any, ParentType extends ResolversPa
 };
 
 export type UserResolvers<ContextType = any, ParentType extends ResolversParentTypes['User'] = ResolversParentTypes['User']> = {
+  debugModeEnabled?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   email?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   firstName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   lastName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   password?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  role?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 

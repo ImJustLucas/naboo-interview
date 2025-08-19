@@ -1,4 +1,5 @@
 import { ActivityFragment } from "@/graphql/generated/types";
+import { useAuth } from "@/hooks";
 import { useGlobalStyles } from "@/utils";
 import { Badge, Button, Card, Grid, Group, Image, Text } from "@mantine/core";
 import Link from "next/link";
@@ -9,6 +10,17 @@ interface ActivityProps {
 
 export function Activity({ activity }: ActivityProps) {
   const { classes } = useGlobalStyles();
+  const { user } = useAuth();
+  
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('fr-FR', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  };
 
   return (
     <Grid.Col span={4}>
@@ -34,6 +46,11 @@ export function Activity({ activity }: ActivityProps) {
           <Badge color="yellow" variant="light">
             {`${activity.price}€/j`}
           </Badge>
+          {user?.debugModeEnabled && activity.createdAt && (
+            <Badge color="orange" variant="light" size="xs">
+              Créé le {formatDate(activity.createdAt)}
+            </Badge>
+          )}
         </Group>
 
         <Text size="sm" color="dimmed" className={classes.ellipsis}>

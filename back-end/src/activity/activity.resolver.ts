@@ -18,6 +18,7 @@ import { Activity } from './activity.schema';
 import { CreateActivityInput } from './activity.inputs.dto';
 import { User } from 'src/user/user.schema';
 import { ContextWithJWTPayload } from 'src/auth/types/context';
+import { CurrentUser } from 'src/auth/decorators/user.decorator';
 
 @Resolver(() => Activity)
 export class ActivityResolver {
@@ -37,20 +38,9 @@ export class ActivityResolver {
     return activity.owner;
   }
 
-  @ResolveField(() => Date, { nullable: true })
-  async createdAt(
-    @Parent() activity: Activity,
-    @Context() context?: ContextWithJWTPayload,
-  ): Promise<Date | null> {
-    if (!context) return null;
-
-    try {
-      const user = await this.userServices.getById(context.jwtPayload.id);
-
-      return user.role === 'admin' ? activity.createdAt : null;
-    } catch {
-      return null;
-    }
+  @ResolveField(() => Date)
+  createdAt(@Parent() activity: Activity): Date {
+    return activity.createdAt;
   }
 
   @Query(() => [Activity])
