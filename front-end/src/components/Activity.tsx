@@ -46,7 +46,7 @@ export function Activity({ activity }: ActivityProps) {
           <Badge color="yellow" variant="light">
             {`${activity.price}€/j`}
           </Badge>
-          {user?.debugModeEnabled && activity.createdAt && (
+          {user?.role === 'admin' && user?.debugModeEnabled && activity.createdAt && (
             <Badge color="orange" variant="light" size="xs">
               Créé le {formatDate(activity.createdAt)}
             </Badge>

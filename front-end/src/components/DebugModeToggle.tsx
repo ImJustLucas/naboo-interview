@@ -4,6 +4,9 @@ import { IconInfoCircle } from "@tabler/icons-react";
 import { useState } from "react";
 import ToggleDebugMode from "@/graphql/mutations/auth/users/toggle-debug-mode";
 import GetUser from "@/graphql/queries/auth/getUser";
+import GetActivities from "@/graphql/queries/activity/getActivities";
+import GetLatestActivities from "@/graphql/queries/activity/getLatestActivities";
+import GetUserActivities from "@/graphql/queries/activity/getUserActivities";
 import { useAuth } from "@/hooks";
 import { useSnackbar } from "@/hooks";
 import type { ToggleDebugModeMutation } from "@/graphql/generated/types";
@@ -20,7 +23,12 @@ const DebugModeToggle = ({ className }: DebugModeToggleProps) => {
   const [toggleDebugMode] = useMutation<ToggleDebugModeMutation>(
     ToggleDebugMode,
     {
-      refetchQueries: [{ query: GetUser }],
+      refetchQueries: [
+        { query: GetUser },
+        { query: GetActivities },
+        { query: GetLatestActivities },
+        { query: GetUserActivities },
+      ],
       onCompleted: (data) => {
         const newStatus = data.toggleDebugMode.debugModeEnabled;
         success(`Mode debug ${newStatus ? "activé" : "désactivé"}`);

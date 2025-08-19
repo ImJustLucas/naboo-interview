@@ -38,9 +38,22 @@ export class ActivityResolver {
     return activity.owner;
   }
 
-  @ResolveField(() => Date)
-  createdAt(@Parent() activity: Activity): Date {
-    return activity.createdAt;
+  @ResolveField(() => Date, { nullable: true })
+  async createdAt(
+    @Parent() activity: Activity,
+    @CurrentUser() jwtPayload?: any,
+  ): Promise<Date | null> {
+    if (!jwtPayload?.id) return null;
+
+    try {
+      const user = await this.userServices.getById(jwtPayload.id);
+
+      return user.role === 'admin' && user.debugModeEnabled
+        ? activity.createdAt
+        : null;
+    } catch {
+      return null;
+    }
   }
 
   @Query(() => [Activity])

@@ -10,6 +10,7 @@ import { Button, Grid, Group } from "@mantine/core";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useQuery } from "@apollo/client";
 
 interface DiscoverProps {
   activities: GetActivitiesQuery["getActivities"];
@@ -27,10 +28,19 @@ export const getServerSideProps: GetServerSideProps<
   return { props: { activities: response.data.getActivities } };
 };
 
-export default function Discover({ activities }: DiscoverProps) {
+export default function Discover({
+  activities: initialActivities,
+}: DiscoverProps) {
   const { user } = useAuth();
+  const { data } = useQuery<GetActivitiesQuery, GetActivitiesQueryVariables>(
+    GetActivities,
+    {
+      skip: !user || user.role !== "admin",
+      fetchPolicy: "cache-and-network",
+    }
+  );
 
-  console.log("activities", activities);
+  const activities = data?.getActivities || initialActivities;
 
   return (
     <>
