@@ -1,11 +1,16 @@
 import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql';
 import { User } from './user.schema';
 import { UserService } from './user.service';
+import { FavoriteService } from '../favorite/favorite.service';
+import { Activity } from '../activity/activity.schema';
 import { ContextWithJWTPayload } from 'src/auth/types/context';
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly favoriteService: FavoriteService,
+  ) {}
 
   @ResolveField(() => Boolean, { nullable: true })
   async debugModeEnabled(
@@ -21,5 +26,15 @@ export class UserResolver {
     } catch {
       return null;
     }
+  }
+
+  @ResolveField(() => [Activity])
+  async favorites(@Parent() user: User): Promise<Activity[]> {
+    return this.favoriteService.getUserFavorites(user.id);
+  }
+
+  @ResolveField(() => Number)
+  async favoritesCount(@Parent() user: User): Promise<number> {
+    return this.favoriteService.getFavoritesCount(user.id);
   }
 }

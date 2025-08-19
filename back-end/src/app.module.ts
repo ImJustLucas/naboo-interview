@@ -9,6 +9,7 @@ import { MeModule } from './me/me.module';
 import { SeedModule } from './seed/seed.module';
 import { SeedService } from './seed/seed.service';
 import { UserModule } from './user/user.module';
+import { FavoriteModule } from './favorite/favorite.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { JwtModule, JwtService } from '@nestjs/jwt';
@@ -60,6 +61,7 @@ import { PayloadDto } from './auth/types/jwtPayload.dto';
     UserModule,
     MeModule,
     ActivityModule,
+    FavoriteModule,
     SeedModule,
   ],
   controllers: [AppController],
