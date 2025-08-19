@@ -11,14 +11,14 @@ interface ActivityProps {
 export function Activity({ activity }: ActivityProps) {
   const { classes } = useGlobalStyles();
   const { user } = useAuth();
-  
+
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('fr-FR', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit'
+    return new Date(dateString).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
     });
   };
 
@@ -46,11 +46,13 @@ export function Activity({ activity }: ActivityProps) {
           <Badge color="yellow" variant="light">
             {`${activity.price}€/j`}
           </Badge>
-          {user?.role === 'admin' && user?.debugModeEnabled && activity.createdAt && (
-            <Badge color="orange" variant="light" size="xs">
-              Créé le {formatDate(activity.createdAt)}
-            </Badge>
-          )}
+          {user?.role === "admin" &&
+            user?.debugModeEnabled &&
+            activity.createdAt && (
+              <Badge color="indigo" variant="light" size="xs">
+                Créé le {formatDate(activity.createdAt)}
+              </Badge>
+            )}
         </Group>
 
         <Text size="sm" color="dimmed" className={classes.ellipsis}>
