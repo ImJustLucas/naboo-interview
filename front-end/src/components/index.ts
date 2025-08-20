@@ -7,3 +7,5 @@ export * from "./Form";
 export * from "./PageTitle";
 export * from "./Topbar";
 export { default as DebugModeToggle } from "./DebugModeToggle";
+export { FavoriteButton } from "./FavoriteButton";
+export { FavoritesList } from "./FavoritesList";

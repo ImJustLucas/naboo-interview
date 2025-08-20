@@ -1,19 +1,10 @@
-import { PageTitle, DebugModeToggle } from "@/components";
-import { graphqlClient } from "@/graphql/apollo";
+import { PageTitle, DebugModeToggle, FavoritesList } from "@/components";
 import { withAuth } from "@/hocs";
 import { useAuth } from "@/hooks";
 import { Avatar, Flex, Text, Divider } from "@mantine/core";
-import { GetServerSideProps } from "next";
 import Head from "next/head";
 
-interface ProfileProps {
-  favoriteActivities: {
-    id: string;
-    name: string;
-  }[];
-}
-
-const Profile = (props: ProfileProps) => {
+const Profile = () => {
   const { user } = useAuth();
 
   return (
@@ -37,6 +28,10 @@ const Profile = (props: ProfileProps) => {
       <Divider my="lg" />
 
       <DebugModeToggle />
+
+      <Divider my="lg" />
+
+      <FavoritesList />
     </>
   );
 };
