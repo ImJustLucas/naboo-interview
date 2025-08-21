@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserFavorite, UserFavoriteSchema } from './favorite.schema';
-import { Activity, ActivitySchema } from '../activity/activity.schema';
-import { User, UserSchema } from '../user/user.schema';
-import { FavoriteService } from './favorite.service';
-import { FavoriteResolver } from './favorite.resolver';
+import { UserFavorite, UserFavoriteSchema } from './schemas/favorite.schema';
+import { Activity, ActivitySchema } from '../activity/schemas/activity.schema';
+import { User, UserSchema } from '../user/schemas/user.schema';
+import { FavoriteService } from './services/favorite.service';
+import { FavoriteResolver } from './resolvers/favorite.resolver';
 
 @Module({
   imports: [

@@ -1,8 +1,8 @@
 import { Context, Parent, ResolveField, Resolver } from '@nestjs/graphql';
-import { User } from './user.schema';
-import { UserService } from './user.service';
-import { FavoriteService } from '../favorite/favorite.service';
-import { Activity } from '../activity/activity.schema';
+import { User } from '../schemas/user.schema';
+import { UserService } from '../services/user.service';
+import { FavoriteService } from 'src/favorite/services/favorite.service';
+import { Activity } from 'src/activity/schemas/activity.schema';
 import { ContextWithJWTPayload } from 'src/auth/types/context';
 
 @Resolver(() => User)

@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ActivityService } from './activity.service';
-import { ActivityModule } from './activity.module';
+import { ActivityModule } from '../activity.module';
 import { TestModule, closeInMongodConnection } from 'src/test/test.module';
 describe('ActivityService', () => {
   let service: ActivityService;

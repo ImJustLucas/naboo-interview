@@ -6,10 +6,10 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserFavorite } from './favorite.schema';
-import { Activity } from '../activity/activity.schema';
-import { User } from '../user/user.schema';
-import { UserFavoriteWithActivity } from './favorite-with-activity.dto';
+import { UserFavorite } from '../schemas/favorite.schema';
+import { Activity } from 'src/activity/schemas/activity.schema';
+import { User } from 'src/user/schemas/user.schema';
+import { UserFavoriteWithActivity } from '../dto/favorite-with-activity.dto';
 
 @Injectable()
 export class FavoriteService {

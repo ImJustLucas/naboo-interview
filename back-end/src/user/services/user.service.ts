@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { SignUpInput } from 'src/auth/types';
-import { User } from './user.schema';
+import { User } from '../schemas/user.schema';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()

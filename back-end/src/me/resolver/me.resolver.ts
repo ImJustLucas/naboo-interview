@@ -1,8 +1,8 @@
 import { Context, Mutation, Query, Resolver } from '@nestjs/graphql';
-import { UserService } from '../../user/user.service';
+import { UserService } from '../../user/services/user.service';
 import { ForbiddenException, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '../../auth/auth.guard';
-import { User } from 'src/user/user.schema';
+import { AuthGuard } from '../../auth/guards/auth.guard';
+import { User } from 'src/user/schemas/user.schema';
 import { ContextWithJWTPayload } from 'src/auth/types/context';
 
 @Resolver('Me')

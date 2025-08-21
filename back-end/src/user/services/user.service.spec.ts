@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserService } from './user.service';
-import { UserModule } from './user.module';
+import { UserModule } from '../user.module';
 import { randomUUID } from 'crypto';
 import { TestModule, closeInMongodConnection } from 'src/test/test.module';
 

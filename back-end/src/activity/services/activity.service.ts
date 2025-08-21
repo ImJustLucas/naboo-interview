@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Activity } from './activity.schema';
-import { CreateActivityInput } from './activity.inputs.dto';
+import { Activity } from '../schemas/activity.schema';
+import { CreateActivityInput } from '../dto/activity.inputs.dto';
 
 @Injectable()
 export class ActivityService {

@@ -1,4 +1,4 @@
-import { User } from 'src/user/user.schema';
+import { User } from 'src/user/schemas/user.schema';
 
 export const user = {
   email: 'user1@test.fr',

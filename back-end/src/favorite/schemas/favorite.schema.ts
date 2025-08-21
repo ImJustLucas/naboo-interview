@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
-import { User } from '../user/user.schema';
-import { Activity } from '../activity/activity.schema';
+import { User } from 'src/user/schemas/user.schema';
+import { Activity } from 'src/activity/schemas/activity.schema';
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()

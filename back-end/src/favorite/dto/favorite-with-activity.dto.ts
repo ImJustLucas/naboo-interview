@@ -1,5 +1,5 @@
 import { Field, ID, ObjectType, Int } from '@nestjs/graphql';
-import { Activity } from '../activity/activity.schema';
+import { Activity } from 'src/activity/schemas/activity.schema';
 
 @ObjectType()
 export class UserFavoriteWithActivity {

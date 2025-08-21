@@ -10,13 +10,13 @@ import {
   ID,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { ActivityService } from './activity.service';
-import { AuthGuard } from 'src/auth/auth.guard';
-import { UserService } from 'src/user/user.service';
-import { Activity } from './activity.schema';
+import { ActivityService } from '../services/activity.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { UserService } from 'src/user/services/user.service';
+import { Activity } from '../schemas/activity.schema';
 
-import { CreateActivityInput } from './activity.inputs.dto';
-import { User } from 'src/user/user.schema';
+import { CreateActivityInput } from '../dto/activity.inputs.dto';
+import { User } from 'src/user/schemas/user.schema';
 import { ContextWithJWTPayload } from 'src/auth/types/context';
 import { CurrentUser } from 'src/auth/decorators/user.decorator';
 

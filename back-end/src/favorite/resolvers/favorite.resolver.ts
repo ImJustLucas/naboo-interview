@@ -8,17 +8,17 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { FavoriteService } from './favorite.service';
-import { AuthGuard } from '../auth/auth.guard';
-import { CurrentUser } from '../auth/decorators/user.decorator';
-import { UserFavorite } from './favorite.schema';
-import { Activity } from '../activity/activity.schema';
-import { UserFavoriteWithActivity } from './favorite-with-activity.dto';
+import { FavoriteService } from '../services/favorite.service';
+import { AuthGuard } from 'src/auth/guards/auth.guard';
+import { CurrentUser } from 'src/auth/decorators/user.decorator';
+import { UserFavorite } from '../schemas/favorite.schema';
+import { Activity } from 'src/activity/schemas/activity.schema';
+import { UserFavoriteWithActivity } from '../dto/favorite-with-activity.dto';
 import {
   AddToFavoritesInput,
   RemoveFromFavoritesInput,
   ReorderFavoritesInput,
-} from './favorite.inputs.dto';
+} from '../dto/favorite.inputs.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
