@@ -90,7 +90,7 @@ export type Query = {
   getCities: Array<Scalars['String']['output']>;
   getLatestActivities: Array<Activity>;
   getMe: User;
-  getUserFavorites: Array<Activity>;
+  getUserFavorites: Array<UserFavoriteWithActivity>;
   isFavorite: Scalars['Boolean']['output'];
 };
 
@@ -157,6 +157,14 @@ export type UserFavorite = {
   order: Scalars['Int']['output'];
   updatedAt: Scalars['DateTime']['output'];
   user: User;
+};
+
+export type UserFavoriteWithActivity = {
+  __typename?: 'UserFavoriteWithActivity';
+  activity: Activity;
+  createdAt: Scalars['DateTime']['output'];
+  id: Scalars['ID']['output'];
+  order: Scalars['Int']['output'];
 };
 
 export type ActivityFragment = { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } };
@@ -261,7 +269,7 @@ export type GetCitiesQuery = { __typename?: 'Query', getCities: Array<string> };
 export type GetUserFavoritesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUserFavoritesQuery = { __typename?: 'Query', getUserFavorites: Array<{ __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } }> };
+export type GetUserFavoritesQuery = { __typename?: 'Query', getUserFavorites: Array<{ __typename?: 'UserFavoriteWithActivity', id: string, order: number, createdAt: any, activity: { __typename?: 'Activity', id: string, city: string, description: string, name: string, price: number, createdAt?: any | null, owner: { __typename?: 'User', firstName: string, lastName: string } } }> };
 
 export type IsFavoriteQueryVariables = Exact<{
   activityId: Scalars['ID']['input'];
@@ -358,6 +366,7 @@ export type ResolversTypes = {
   String: ResolverTypeWrapper<Scalars['String']['output']>;
   User: ResolverTypeWrapper<User>;
   UserFavorite: ResolverTypeWrapper<UserFavorite>;
+  UserFavoriteWithActivity: ResolverTypeWrapper<UserFavoriteWithActivity>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -379,6 +388,7 @@ export type ResolversParentTypes = {
   String: Scalars['String']['output'];
   User: User;
   UserFavorite: UserFavorite;
+  UserFavoriteWithActivity: UserFavoriteWithActivity;
 };
 
 export type ActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['Activity'] = ResolversParentTypes['Activity']> = {
@@ -415,7 +425,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   getCities?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
   getLatestActivities?: Resolver<Array<ResolversTypes['Activity']>, ParentType, ContextType>;
   getMe?: Resolver<ResolversTypes['User'], ParentType, ContextType>;
-  getUserFavorites?: Resolver<Array<ResolversTypes['Activity']>, ParentType, ContextType>;
+  getUserFavorites?: Resolver<Array<ResolversTypes['UserFavoriteWithActivity']>, ParentType, ContextType>;
   isFavorite?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType, RequireFields<QueryIsFavoriteArgs, 'activityId'>>;
 };
 
@@ -447,6 +457,14 @@ export type UserFavoriteResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 };
 
+export type UserFavoriteWithActivityResolvers<ContextType = any, ParentType extends ResolversParentTypes['UserFavoriteWithActivity'] = ResolversParentTypes['UserFavoriteWithActivity']> = {
+  activity?: Resolver<ResolversTypes['Activity'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  order?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Activity?: ActivityResolvers<ContextType>;
   DateTime?: GraphQLScalarType;
@@ -455,5 +473,6 @@ export type Resolvers<ContextType = any> = {
   SignInDto?: SignInDtoResolvers<ContextType>;
   User?: UserResolvers<ContextType>;
   UserFavorite?: UserFavoriteResolvers<ContextType>;
+  UserFavoriteWithActivity?: UserFavoriteWithActivityResolvers<ContextType>;
 };
 

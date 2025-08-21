@@ -1,81 +1,39 @@
 import { useState, useEffect } from "react";
-import { Grid, Text, Stack, ActionIcon, Box, Group } from "@mantine/core";
-import { IconTrash } from "@tabler/icons-react";
-import { useMutation, useQuery } from "@apollo/client";
-import { ActivityCard } from "./Activity";
-import { useSnackbar } from "@/hooks";
-import GetUserFavorites from "@/graphql/queries/favorite/getUserFavorites";
-import RemoveFromFavorites from "@/graphql/mutations/favorite/removeFromFavorites";
-import type { ActivityFragment } from "@/graphql/generated/types";
+import { Grid, Text, Stack } from "@mantine/core";
+
+import {
+  DndContext,
+  useSensor,
+  KeyboardSensor,
+  useSensors,
+  PointerSensor,
+  closestCenter,
+  DragOverlay,
+} from "@dnd-kit/core";
+import {
+  SortableContext,
+  sortableKeyboardCoordinates,
+} from "@dnd-kit/sortable";
+import { useReorderFavorites } from "@/hooks/favorite.hook";
+import { SortableFavorite } from "./sortable-favorite";
+import { DragPreview } from "./sortable-favorite/drag-preview";
 
 function FavoritesListClient() {
-  const { success, error } = useSnackbar();
-  const [localFavorites, setLocalFavorites] = useState<ActivityFragment[]>([]);
+  const { loading, localFavorites, handleDragStart, handleDragEnd, activeActivity } = useReorderFavorites();
 
-  const { data, loading } = useQuery(GetUserFavorites, {
-    onCompleted: (data) => {
-      setLocalFavorites(data.getUserFavorites || []);
-    },
-    fetchPolicy: "cache-and-network",
-  });
-
-  const [removeFromFavorites] = useMutation(RemoveFromFavorites, {
-    update(cache, { data }, { variables }) {
-      if (variables) {
-        const removedActivityId = variables.input.activityId;
-
-        setLocalFavorites((prev) =>
-          prev.filter((activity) => activity.id !== removedActivityId)
-        );
-
-        const existingFavorites: any = cache.readQuery({
-          query: GetUserFavorites,
-        });
-
-        if (existingFavorites) {
-          cache.writeQuery({
-            query: GetUserFavorites,
-            data: {
-              getUserFavorites: existingFavorites.getUserFavorites.filter(
-                (activity: ActivityFragment) =>
-                  activity.id !== removedActivityId
-              ),
-            },
-          });
-        }
-      }
-    },
-    onCompleted: () => {
-      success("Favori supprimé");
-    },
-    onError: (err: any) => {
-      error(`Erreur: ${err.message}`);
-      if (data?.getUserFavorites) {
-        setLocalFavorites(data.getUserFavorites);
-      }
-    },
-  });
-
-  const handleRemoveFavorite = async (activityId: string) => {
-    try {
-      await removeFromFavorites({
-        variables: { input: { activityId } },
-      });
-    } catch (err: any) {
-      error(`Erreur lors de la suppression: ${err.message}`);
-    }
-  };
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
 
   if (loading) {
-    return <Text>Chargement des favoris...</Text>;
+    return <Text>loading...</Text>;
   }
 
   if (!localFavorites.length) {
-    return (
-      <Text color="dimmed" ta="center" py="xl">
-        Aucun favori pour le moment
-      </Text>
-    );
+    return null;
   }
 
   return (
@@ -85,29 +43,25 @@ function FavoritesListClient() {
       </Text>
 
       <Grid>
-        {localFavorites.map((activity) => (
-          <Grid.Col key={activity.id} span={4}>
-            <Box pos="relative">
-              <Group
-                pos="absolute"
-                top={8}
-                right={8}
-                spacing="xs"
-                style={{ zIndex: 10 }}
-              >
-                <ActionIcon
-                  size="sm"
-                  variant="filled"
-                  color="red"
-                  onClick={() => handleRemoveFavorite(activity.id)}
-                >
-                  <IconTrash size="0.8rem" />
-                </ActionIcon>
-              </Group>
-              <ActivityCard activity={activity} />
-            </Box>
-          </Grid.Col>
-        ))}
+        <DndContext 
+          sensors={sensors} 
+          collisionDetection={closestCenter}
+          onDragStart={handleDragStart}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={localFavorites.map((activity) => activity.id)}
+          >
+            {localFavorites.map((activity) => (
+              <Grid.Col key={activity.id} span={4}>
+                <SortableFavorite activity={activity} />
+              </Grid.Col>
+            ))}
+          </SortableContext>
+          <DragOverlay>
+            {activeActivity ? <DragPreview activity={activeActivity} /> : null}
+          </DragOverlay>
+        </DndContext>
       </Grid>
     </Stack>
   );

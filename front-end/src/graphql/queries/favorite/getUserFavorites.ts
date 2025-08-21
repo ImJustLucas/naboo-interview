@@ -4,7 +4,12 @@ import ActivityFragment from "@/graphql/fragments/activity";
 const GetUserFavorites = gql`
   query GetUserFavorites {
     getUserFavorites {
-      ...Activity
+      id
+      order
+      createdAt
+      activity {
+        ...Activity
+      }
     }
   }
   ${ActivityFragment}

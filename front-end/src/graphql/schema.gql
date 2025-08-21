@@ -47,7 +47,7 @@ type Query {
   getCities: [String!]!
   getLatestActivities: [Activity!]!
   getMe: User!
-  getUserFavorites: [Activity!]!
+  getUserFavorites: [UserFavoriteWithActivity!]!
   isFavorite(activityId: ID!): Boolean!
 }
 
@@ -94,4 +94,11 @@ type UserFavorite {
   order: Int!
   updatedAt: DateTime!
   user: User!
+}
+
+type UserFavoriteWithActivity {
+  activity: Activity!
+  createdAt: DateTime!
+  id: ID!
+  order: Int!
 }

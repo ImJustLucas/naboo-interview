@@ -13,6 +13,7 @@ import { AuthGuard } from '../auth/auth.guard';
 import { CurrentUser } from '../auth/decorators/user.decorator';
 import { UserFavorite } from './favorite.schema';
 import { Activity } from '../activity/activity.schema';
+import { UserFavoriteWithActivity } from './favorite-with-activity.dto';
 import {
   AddToFavoritesInput,
   RemoveFromFavoritesInput,
@@ -63,10 +64,10 @@ export class FavoriteResolver {
     return true;
   }
 
-  @Query(() => [Activity])
+  @Query(() => [UserFavoriteWithActivity])
   @UseGuards(AuthGuard)
-  async getUserFavorites(@CurrentUser() jwtPayload: any): Promise<Activity[]> {
-    return this.favoriteService.getUserFavorites(jwtPayload.id);
+  async getUserFavorites(@CurrentUser() jwtPayload: any): Promise<UserFavoriteWithActivity[]> {
+    return this.favoriteService.getUserFavoritesWithOrder(jwtPayload.id);
   }
 
   @Query(() => Boolean)

@@ -9,6 +9,7 @@ import { Model } from 'mongoose';
 import { UserFavorite } from './favorite.schema';
 import { Activity } from '../activity/activity.schema';
 import { User } from '../user/user.schema';
+import { UserFavoriteWithActivity } from './favorite-with-activity.dto';
 
 @Injectable()
 export class FavoriteService {
@@ -96,6 +97,21 @@ export class FavoriteService {
       .exec();
 
     return favorites.map((favorite) => favorite.activity as Activity);
+  }
+
+  async getUserFavoritesWithOrder(userId: string): Promise<UserFavoriteWithActivity[]> {
+    const favorites = await this.userFavoriteModel
+      .find({ user: userId })
+      .populate('activity')
+      .sort({ order: 1 })
+      .exec();
+
+    return favorites.map((favorite) => ({
+      id: favorite.id,
+      activity: favorite.activity as Activity,
+      order: favorite.order,
+      createdAt: favorite.createdAt,
+    }));
   }
 
   async reorderFavorites(userId: string, activityIds: string[]): Promise<void> {
