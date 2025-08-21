@@ -23,9 +23,9 @@ function FavoritesListClient() {
     update(cache, { data }, { variables }) {
       if (variables) {
         const removedActivityId = variables.input.activityId;
-        
-        setLocalFavorites(prev => 
-          prev.filter(activity => activity.id !== removedActivityId)
+
+        setLocalFavorites((prev) =>
+          prev.filter((activity) => activity.id !== removedActivityId)
         );
 
         const existingFavorites: any = cache.readQuery({
@@ -37,7 +37,8 @@ function FavoritesListClient() {
             query: GetUserFavorites,
             data: {
               getUserFavorites: existingFavorites.getUserFavorites.filter(
-                (activity: ActivityFragment) => activity.id !== removedActivityId
+                (activity: ActivityFragment) =>
+                  activity.id !== removedActivityId
               ),
             },
           });
@@ -82,7 +83,7 @@ function FavoritesListClient() {
       <Text size="lg" weight={600}>
         Mes favoris ({localFavorites.length})
       </Text>
-      
+
       <Grid>
         {localFavorites.map((activity) => (
           <Grid.Col key={activity.id} span={4}>
